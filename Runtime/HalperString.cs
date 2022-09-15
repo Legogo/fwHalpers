@@ -8,6 +8,11 @@ namespace fwp.halpers
 {
     static public class HalperString
     {
+        static public string iStringFormatBool(string label, bool val)
+        {
+            return label + " ? " + (val ? "<color=green>true</color>" : "<color=red><b>false</b></color>");
+        }
+
         static public string addZeros(int val, int digit = 2)
         {
             string output = val.ToString();

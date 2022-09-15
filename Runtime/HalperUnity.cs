@@ -8,6 +8,25 @@ namespace fwp.halpers
 {
     static public class HalperUnity
     {
+
+        public static void clearPlayerPrefs()
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+
+            Debug.Log("all pprefs deleted");
+        }
+
+        /// <summary>
+        /// call for GC
+        /// </summary>
+        static public void clearGC()
+        {
+            Debug.Log("clearing GC at frame : " + Time.frameCount);
+            Resources.UnloadUnusedAssets();
+            System.GC.Collect();
+        }
+
         /// <summary>
         /// doesn't work yet
         /// </summary>

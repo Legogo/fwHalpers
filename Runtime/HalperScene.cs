@@ -131,6 +131,15 @@ static public class HalperScene
 		return paths.ToArray();
 	}
 
+	static public bool checkIfCanBeLoaded(string sceneName)
+    {
+		string[] all = getAllBuildSettingsScenes(true);
+        for (int i = 0; i < all.Length; i++)
+        {
+			if (all[i].Contains(sceneName)) return true;
+        }
+		return false;
+    }
 
 #if UNITY_EDITOR
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace fwp.halpers
+namespace fwp.halpers.editor
 {
     /// <summary>
     /// This is used to find the mouse position when it's over a SceneView.

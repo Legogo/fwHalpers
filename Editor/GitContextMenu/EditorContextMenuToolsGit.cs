@@ -3,10 +3,8 @@ using UnityEditor;
 using System;
 using System.IO;
 
-namespace fwp.git
+namespace fwp.halpers.editor.git
 {
-    using fwp.halpers.editor;
-
     public class EditorContextMenuToolsGit : MonoBehaviour
     {
         //[MenuItem("Assets/git !#&%g")]

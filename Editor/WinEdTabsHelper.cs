@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace fwp.halpers
+namespace fwp.halpers.editor
 {
     public class WinEdTabsHelper : MonoBehaviour
     {

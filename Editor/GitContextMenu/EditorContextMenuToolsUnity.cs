@@ -4,19 +4,19 @@
 /// some various context menu related to Unity
 /// </summary>
 
-namespace fwp
+namespace fwp.halpers.editor
 {
     using fwp.halpers;
 
     public class EditorContextMenuToolsUnity
     {
-        [MenuItem("Tools/Clear PlayerPrefs")]
+        [MenuItem("Assets/clear:   PlayerPrefs")]
         public static void ctxmClearPPrefs()
         {
             HalperUnity.clearPlayerPrefs();
         }
 
-        [MenuItem("Tools/open persistant data path")]
+        [MenuItem("Assets/open:   persistant data path")]
         static public void osOpenDataPathFolder()
         {
             HalperNatives.os_openFolder(HalperNatives.getDataPath());

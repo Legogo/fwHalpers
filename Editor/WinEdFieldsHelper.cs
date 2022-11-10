@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace fwp.halpers
+namespace fwp.halpers.editor
 {
 	static public class WinEdFieldsHelper
 	{

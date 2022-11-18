@@ -38,6 +38,25 @@ static public class HalperNatives
         System.Diagnostics.Process.Start("explorer.exe", argument);
     }
 
+    static public void os_cmd(string command)
+    {
+        // https://stackoverflow.com/questions/181719/how-do-i-start-a-process-from-c   
+        //System.Diagnostics.Process.Start("cmd.exe", command);
+        //Process process = Process.Start($"cmd.exe");
+
+        // https://stackoverflow.com/questions/1255909/execute-cmd-command-from-code/1255928#1255928
+        Process process = new Process();
+        process.StartInfo.FileName = "cmd.exe";
+        //process.StartInfo.WorkingDirectory = "c:\temp";
+        process.StartInfo.Arguments = "/c " + command;
+
+        process.Start();
+        //lock unity until exe is done
+        //process.WaitForExit();
+
+        //process.Close();
+    }
+
 
     //https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html
     /// <summary>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace fwp.halpers.editor
+namespace fwp.halpers
 {
     public class ReadOnlyAttribute : PropertyAttribute
     {

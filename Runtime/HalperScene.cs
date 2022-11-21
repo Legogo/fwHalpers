@@ -80,6 +80,16 @@ static public class HalperScene
 		return default(Scene);
 	}
 
+	static public bool isSceneOpened(string sceneName)
+    {
+		for (int i = 0; i < SceneManager.sceneCount; i++)
+		{
+			Scene sc = SceneManager.GetSceneAt(i);
+			if (sc.name == sceneName) return true;
+		}
+		return false;
+	}
+
 	static public T getComponentInScene<T>(Scene sc, bool includeInactive = false) where T : Component
 	{
 		GameObject[] roots = sc.GetRootGameObjects();

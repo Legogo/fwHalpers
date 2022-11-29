@@ -9,303 +9,314 @@ using UnityEditor;
 
 using UnityEngine.SceneManagement;
 
-static public class HalperScene
+namespace fwp.halpers
 {
 
-#if UNITY_EDITOR
-	static public string getPathOfSceneInProject(string sceneName)
-    {
-		string[] guids = AssetDatabase.FindAssets("t:Scene");
+	static public class HalperScene
+	{
 
-        for (int i = 0; i < guids.Length; i++)
-        {
-			string path = AssetDatabase.GUIDToAssetPath(guids[i]);
-			if (path.Contains("/"+sceneName)) return path;
-        }
-		return string.Empty;
-    }
+		static public bool isSceneLoaded(string sceneName)
+		{
+			var scene = UnityEditor.SceneManagement.EditorSceneManager.GetSceneByName(sceneName);
+			return scene.isLoaded;
+		}
+
+#if UNITY_EDITOR
+		static public string getPathOfSceneInProject(string sceneName)
+		{
+			string[] guids = AssetDatabase.FindAssets("t:Scene");
+
+			for (int i = 0; i < guids.Length; i++)
+			{
+				string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+				if (path.Contains("/" + sceneName)) return path;
+			}
+			return string.Empty;
+		}
 #endif
 
-	static public void setupObjectChildOfSceneOfObject(GameObject target, GameObject owner)
-	{
-
-		//https://stackoverflow.com/questions/45798666/move-transfer-gameobject-to-another-scene
-		UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(target, owner.scene);
-
-	}
-
-	static public Scene[] getOpenedScenesOfPrefix(string prefix, string filter)
-	{
-		List<Scene> list = new List<Scene>();
-		int count = SceneManager.sceneCount;
-		for (int i = 0; i < count; i++)
+		static public void setupObjectChildOfSceneOfObject(GameObject target, GameObject owner)
 		{
-			Scene sc = SceneManager.GetSceneAt(i);
 
-			if (sc.name.Contains(filter)) continue;
-			if (!sc.name.StartsWith(prefix)) continue;
+			//https://stackoverflow.com/questions/45798666/move-transfer-gameobject-to-another-scene
+			UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(target, owner.scene);
 
-			if (sc.isLoaded) list.Add(sc);
 		}
-		return list.ToArray();
-	}
 
-	/// <summary>
-	/// active scene
-	/// </summary>
-	/// <param name="partOfSceneName"></param>
-	/// <returns></returns>
-	static public bool isActiveScene(string partOfSceneName)
-	{
-		Scene sc = SceneManager.GetActiveScene();
-		if (sc.name.Contains(partOfSceneName)) return true;
-		return false;
-	}
-
-	static public bool isActiveScene(Scene sc)
-	{
-		return sc == SceneManager.GetActiveScene();
-	}
-
-	static public Scene getSceneFromAdded(string sceneName)
-	{
-		for (int i = 0; i < SceneManager.sceneCount; i++)
+		static public Scene[] getOpenedScenesOfPrefix(string prefix, string filter)
 		{
-			Scene sc = SceneManager.GetSceneAt(i);
-			if (sc.isLoaded && sc.IsValid())
+			List<Scene> list = new List<Scene>();
+			int count = SceneManager.sceneCount;
+			for (int i = 0; i < count; i++)
 			{
-				if (sc.name == sceneName) return sc;
+				Scene sc = SceneManager.GetSceneAt(i);
+
+				if (sc.name.Contains(filter)) continue;
+				if (!sc.name.StartsWith(prefix)) continue;
+
+				if (sc.isLoaded) list.Add(sc);
 			}
+			return list.ToArray();
 		}
-		return default(Scene);
-	}
 
-	static public bool isSceneOpened(string sceneName)
-    {
-		for (int i = 0; i < SceneManager.sceneCount; i++)
+		/// <summary>
+		/// active scene
+		/// </summary>
+		/// <param name="partOfSceneName"></param>
+		/// <returns></returns>
+		static public bool isActiveScene(string partOfSceneName)
 		{
-			Scene sc = SceneManager.GetSceneAt(i);
-			if (sc.name == sceneName) return true;
+			Scene sc = SceneManager.GetActiveScene();
+			if (sc.name.Contains(partOfSceneName)) return true;
+			return false;
 		}
-		return false;
-	}
 
-	static public T getComponentInScene<T>(Scene sc, bool includeInactive = false) where T : Component
-	{
-		GameObject[] roots = sc.GetRootGameObjects();
-		for (int i = 0; i < roots.Length; i++)
+		static public bool isActiveScene(Scene sc)
 		{
-			T output = roots[i].GetComponentInChildren<T>();
-			if (output != null) return output;
+			return sc == SceneManager.GetActiveScene();
 		}
-		return null;
-	}
 
-	static public T[] getComponentsInScene<T>(Scene sc, bool includeInactive = false) where T : Component
-	{
-		List<T> output = new List<T>();
-		GameObject[] roots = sc.GetRootGameObjects();
-		for (int i = 0; i < roots.Length; i++)
+		static public Scene getSceneFromAdded(string sceneName)
 		{
-			output.AddRange(roots[i].GetComponentsInChildren<T>(includeInactive));
+			for (int i = 0; i < SceneManager.sceneCount; i++)
+			{
+				Scene sc = SceneManager.GetSceneAt(i);
+				if (sc.isLoaded && sc.IsValid())
+				{
+					if (sc.name == sceneName) return sc;
+				}
+			}
+			return default(Scene);
 		}
-		return output.ToArray();
-	}
 
-	static public string[] getAllBuildSettingsScenes(bool removePath)
-	{
-		List<string> paths = new List<string>();
-
-		//Debug.Log(SceneManager.sceneCountInBuildSettings);
-
-		for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+		static public bool isSceneOpened(string sceneName)
 		{
-			string path = SceneUtility.GetScenePathByBuildIndex(i);
+			for (int i = 0; i < SceneManager.sceneCount; i++)
+			{
+				Scene sc = SceneManager.GetSceneAt(i);
+				if (sc.name == sceneName) return true;
+			}
+			return false;
+		}
+
+		static public T getComponentInScene<T>(Scene sc, bool includeInactive = false) where T : Component
+		{
+			GameObject[] roots = sc.GetRootGameObjects();
+			for (int i = 0; i < roots.Length; i++)
+			{
+				T output = roots[i].GetComponentInChildren<T>();
+				if (output != null) return output;
+			}
+			return null;
+		}
+
+		static public T[] getComponentsInScene<T>(Scene sc, bool includeInactive = false) where T : Component
+		{
+			List<T> output = new List<T>();
+			GameObject[] roots = sc.GetRootGameObjects();
+			for (int i = 0; i < roots.Length; i++)
+			{
+				output.AddRange(roots[i].GetComponentsInChildren<T>(includeInactive));
+			}
+			return output.ToArray();
+		}
+
+		static public string[] getAllBuildSettingsScenes(bool removePath)
+		{
+			List<string> paths = new List<string>();
+
+			//Debug.Log(SceneManager.sceneCountInBuildSettings);
+
+			for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+			{
+				string path = SceneUtility.GetScenePathByBuildIndex(i);
+
+				if (removePath)
+				{
+					int slashIndex = path.LastIndexOf('/');
+
+					if (slashIndex >= 0)
+					{
+						path = path.Substring(slashIndex + 1);
+					}
+
+					path = path.Remove(path.LastIndexOf(".unity"));
+
+				}
+
+				paths.Add(path);
+			}
+
+			return paths.ToArray();
+		}
+
+		static public bool checkIfCanBeLoaded(string sceneName)
+		{
+			string[] all = getAllBuildSettingsScenes(true);
+			for (int i = 0; i < all.Length; i++)
+			{
+				if (all[i].Contains(sceneName)) return true;
+			}
+			return false;
+		}
+
+#if UNITY_EDITOR
+
+		/// <summary>
+		/// Récupère un tableau des scènes/chemin d'accès qui sont présente dans les paramètres du build
+		/// </summary>
+		/// <param name="removePath">Juste le nom (myScene) ou tout le chemin d'accès (Assets/folder/myScene.unity) ?</param>
+		/// <returns>Le tableau avec le nom ou chemin d'accès aux scènes.</returns>
+		static public string[] getAllEditorBuildScenes(bool includeSceneOnly, bool removePath)
+		{
+			string[] scenes = new string[] { };
+
+			if (includeSceneOnly)
+			{
+				scenes = EditorBuildSettingsScene.GetActiveSceneList(EditorBuildSettings.scenes);
+			}
+			else
+			{
+				EditorBuildSettingsScene[] buildScenes = EditorBuildSettings.scenes;
+
+				scenes = new string[buildScenes.Length];
+
+				for (int i = 0; i < scenes.Length; i++)
+				{
+					scenes[i] = buildScenes[i].path;
+				}
+			}
 
 			if (removePath)
 			{
-				int slashIndex = path.LastIndexOf('/');
-
-				if (slashIndex >= 0)
+				for (int i = 0; i < scenes.Length; i++)
 				{
-					path = path.Substring(slashIndex + 1);
+					int slashIndex = scenes[i].LastIndexOf('/');
+
+					if (slashIndex >= 0)
+					{
+						scenes[i] = scenes[i].Substring(slashIndex + 1);
+					}
+
+					scenes[i] = scenes[i].Remove(scenes[i].LastIndexOf(".unity"));
 				}
 
-				path = path.Remove(path.LastIndexOf(".unity"));
-
+				return scenes;
 			}
+			else return scenes;
 
-			paths.Add(path);
-		}
+		} // getAllBuildScenesNames()
 
-		return paths.ToArray();
-	}
-
-	static public bool checkIfCanBeLoaded(string sceneName)
-    {
-		string[] all = getAllBuildSettingsScenes(true);
-        for (int i = 0; i < all.Length; i++)
-        {
-			if (all[i].Contains(sceneName)) return true;
-        }
-		return false;
-    }
-
-#if UNITY_EDITOR
-
-	/// <summary>
-	/// Récupère un tableau des scènes/chemin d'accès qui sont présente dans les paramètres du build
-	/// </summary>
-	/// <param name="removePath">Juste le nom (myScene) ou tout le chemin d'accès (Assets/folder/myScene.unity) ?</param>
-	/// <returns>Le tableau avec le nom ou chemin d'accès aux scènes.</returns>
-	static public string[] getAllEditorBuildScenes(bool includeSceneOnly, bool removePath)
-	{
-		string[] scenes = new string[] { };
-
-		if (includeSceneOnly)
+		static public string getBuildSettingsSceneFullName(string partName)
 		{
-			scenes = EditorBuildSettingsScene.GetActiveSceneList(EditorBuildSettings.scenes);
-		}
-		else
-		{
-			EditorBuildSettingsScene[] buildScenes = EditorBuildSettings.scenes;
+			if (partName.EndsWith(".unity")) partName = partName.Substring(0, partName.IndexOf(".unity"));
 
-			scenes = new string[buildScenes.Length];
-
-			for (int i = 0; i < scenes.Length; i++)
+			string[] all = HalperScene.getAllBuildSettingsScenes(true); // no path
+			for (int i = 0; i < all.Length; i++)
 			{
-				scenes[i] = buildScenes[i].path;
-			}
-		}
-
-		if (removePath)
-		{
-			for (int i = 0; i < scenes.Length; i++)
-			{
-				int slashIndex = scenes[i].LastIndexOf('/');
-
-				if (slashIndex >= 0)
+				if (all[i].Contains(partName))
 				{
-					scenes[i] = scenes[i].Substring(slashIndex + 1);
+					return all[i];
 				}
-
-				scenes[i] = scenes[i].Remove(scenes[i].LastIndexOf(".unity"));
 			}
-
-			return scenes;
+			return string.Empty;
 		}
-		else return scenes;
 
-	} // getAllBuildScenesNames()
-
-	static public string getBuildSettingsSceneFullName(string partName)
-	{
-		if (partName.EndsWith(".unity")) partName = partName.Substring(0, partName.IndexOf(".unity"));
-
-		string[] all = HalperScene.getAllBuildSettingsScenes(true); // no path
-		for (int i = 0; i < all.Length; i++)
+		static public string getBuildSettingsFullPathOfScene(string partName)
 		{
-			if (all[i].Contains(partName))
+			string fullName = getBuildSettingsSceneFullName(partName);
+			string[] paths = getAllBuildSettingsScenes(false);
+			for (int i = 0; i < paths.Length; i++)
 			{
-				return all[i];
+				if (paths[i].Contains(fullName))
+				{
+					return paths[i];
+				}
 			}
-		}
-		return string.Empty;
-	}
 
-	static public string getBuildSettingsFullPathOfScene(string partName)
-	{
-		string fullName = getBuildSettingsSceneFullName(partName);
-		string[] paths = getAllBuildSettingsScenes(false);
-		for (int i = 0; i < paths.Length; i++)
+			return string.Empty;
+		}
+
+		static public bool isSceneInBuildSettings(string partName, bool hardCheck = false)
 		{
-			if(paths[i].Contains(fullName))
+
+			string nm = getBuildSettingsSceneFullName(partName);
+			if (nm.Length < 0) return false;
+
+			if (hardCheck) return nm == partName;
+			return true;
+		}
+
+		static public void addSceneToBuildSettings(string sceneName)
+		{
+			if (isSceneInBuildSettings(sceneName, true)) return;
+
+			string assetPath = getSceneAssetFullPath(sceneName);
+
+			//string fullName = getBuildSettingsSceneFullName(sceneName);
+
+			List<EditorBuildSettingsScene> all = new List<EditorBuildSettingsScene>();
+			all.AddRange(EditorBuildSettings.scenes);
+
+			//string path = getBuildSettingsFullPathOfScene(sceneName);
+
+			EditorBuildSettingsScene addScene = new EditorBuildSettingsScene(assetPath, true);
+			all.Add(addScene);
+
+			EditorBuildSettings.scenes = all.ToArray();
+		}
+
+		static public string getSceneAssetFullPath(string sceneName)
+		{
+			string fullName = getBuildSettingsSceneFullName(sceneName);
+
+			string[] paths = getAssetScenesPaths();
+
+			for (int i = 0; i < paths.Length; i++)
 			{
-				return paths[i];
+				if (!paths[i].Contains(".unity")) continue;
+
+				if (paths[i].Contains(sceneName)) return paths[i];
 			}
+
+			return string.Empty;
 		}
 
-		return string.Empty;
-	}
-
-	static public bool isSceneInBuildSettings(string partName, bool hardCheck = false)
-	{
-
-		string nm = getBuildSettingsSceneFullName(partName);
-		if (nm.Length < 0) return false;
-
-		if (hardCheck) return nm == partName;
-		return true;
-	}
-
-	static public void addSceneToBuildSettings(string sceneName)
-	{
-		if (isSceneInBuildSettings(sceneName, true)) return;
-
-		string assetPath = getSceneAssetFullPath(sceneName);
-
-		//string fullName = getBuildSettingsSceneFullName(sceneName);
-
-		List<EditorBuildSettingsScene> all = new List<EditorBuildSettingsScene>();
-		all.AddRange(EditorBuildSettings.scenes);
-
-		//string path = getBuildSettingsFullPathOfScene(sceneName);
-
-		EditorBuildSettingsScene addScene = new EditorBuildSettingsScene(assetPath, true);
-		all.Add(addScene);
-
-		EditorBuildSettings.scenes = all.ToArray();
-	}
-
-	static public string getSceneAssetFullPath(string sceneName)
-	{
-		string fullName = getBuildSettingsSceneFullName(sceneName);
-
-		string[] paths = getAssetScenesPaths();
-
-		for (int i = 0; i < paths.Length; i++)
+		static public string[] getAssetScenesPaths()
 		{
-			if (!paths[i].Contains(".unity")) continue;
+			string[] paths = AssetDatabase.FindAssets("t:Scene");
 
-			if (paths[i].Contains(sceneName)) return paths[i];
+			if (paths.Length <= 0)
+			{
+				Debug.LogWarning("asking for scene but none ?");
+			}
+
+			//replace GUID by full path
+			for (int i = 0; i < paths.Length; i++)
+			{
+				paths[i] = AssetDatabase.GUIDToAssetPath(paths[i]);
+			}
+
+			return paths;
 		}
 
-		return string.Empty;
-	}
-
-	static public string[] getAssetScenesPaths()
-	{
-		string[] paths = AssetDatabase.FindAssets("t:Scene");
-
-		if(paths.Length <= 0)
+		static public string[] getAssetScenesNames(bool remExt = false)
 		{
-			Debug.LogWarning("asking for scene but none ?");
+			string[] paths = getAssetScenesPaths();
+
+			List<string> tmp = new List<string>();
+			for (int i = 0; i < paths.Length; i++)
+			{
+				string scName = paths[i].Substring(paths[i].LastIndexOf("/") + 1);
+				if (remExt && scName.IndexOf(".") > -1) scName = scName.Substring(0, scName.IndexOf("."));
+				tmp.Add(scName);
+			}
+
+			return tmp.ToArray();
 		}
-
-		//replace GUID by full path
-		for (int i = 0; i < paths.Length; i++)
-		{
-			paths[i] = AssetDatabase.GUIDToAssetPath(paths[i]);
-		}
-
-		return paths;
-	}
-
-	static public string[] getAssetScenesNames(bool remExt = false)
-	{
-		string[] paths = getAssetScenesPaths();
-
-		List<string> tmp = new List<string>();
-		for (int i = 0; i < paths.Length; i++)
-		{
-			string scName = paths[i].Substring(paths[i].LastIndexOf("/") + 1);
-			if (remExt && scName.IndexOf(".") > -1) scName = scName.Substring(0, scName.IndexOf("."));
-			tmp.Add(scName);
-		}
-
-		return tmp.ToArray();
-	}
 
 #endif
+
+	}
 
 }

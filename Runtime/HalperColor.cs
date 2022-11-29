@@ -8,9 +8,9 @@ namespace fwp.halpers
     {
         public const string colorParserSeparator = ";";
 
-        public readonly static Color yellowPure = new Color(250f, 250f, 50f);
-        public readonly static Color yellowDark = new Color(200f, 200f, 50f);
-        public readonly static Color orange = new Color(255f, 102f, 50f);
+        public readonly static Color yellowPure = rgbToColor(250f, 250f, 50f, 255f);
+        public readonly static Color yellowDark = rgbToColor(200f, 200f, 50f, 255f);
+        public readonly static Color orange = rgbToColor(255f, 125f, 0f, 255f);
 
         /// <summary>
         /// Retourne une Color en utilisant les paramètres [0,255] au lieu de [0,1]

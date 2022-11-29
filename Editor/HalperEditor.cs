@@ -33,6 +33,20 @@ namespace fwp.halpers.editor
 
         }
 
+        static public void pingFolder(string assetsPath)
+        {
+            string path = "Assets/" + assetsPath;
+
+            // Load object
+            UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath(path, typeof(UnityEngine.Object));
+
+            // Select the object in the project folder
+            Selection.activeObject = obj;
+
+            // Also flash the folder yellow to highlight it
+            EditorGUIUtility.PingObject(obj);
+        }
+
         static public T editor_draw_selectObject<T>(T instance = null, string overrideSelectLabel = "") where T : Component
         {
             if (instance == null)

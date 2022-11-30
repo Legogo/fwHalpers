@@ -28,8 +28,16 @@ namespace fwp.halpers
 
 			for (int i = 0; i < guids.Length; i++)
 			{
+				// Assets/Modules/module-a-b.unity
 				string path = AssetDatabase.GUIDToAssetPath(guids[i]);
-				if (path.Contains("/" + sceneName)) return path;
+
+				string pathSceneName = path.Substring(0, path.LastIndexOf("."));
+				pathSceneName = pathSceneName.Substring(pathSceneName.LastIndexOf("/")+1);
+
+				// module-a-b
+				//Debug.Log(pathSceneName);
+
+				if (pathSceneName == sceneName) return path;
 			}
 			return string.Empty;
 		}

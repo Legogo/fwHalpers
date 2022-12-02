@@ -22,6 +22,8 @@ namespace fwp.halpers.editor
 
         static public int generateTabsHeader(int tabSelected, GUIContent[] tabs)
         {
+            if (tabs == null) return 0;
+
             //GUIStyle gs = new GUIStyle(GUI.skin.button)
             //int newTab = GUILayout.Toolbar((int)tabSelected, modeLabels, "LargeButton", GUILayout.Width(toolbarWidth), GUILayout.ExpandWidth(true));
             int newTab = GUILayout.Toolbar((int)tabSelected, tabs, "LargeButton");

@@ -33,6 +33,18 @@ namespace fwp.halpers.editor
 
         }
 
+        /// <summary>
+        /// shortcut to EditorGUIUtility.PingObject
+        /// </summary>
+        static public void pingObject(Object asset)
+        {
+            // Also flash the folder yellow to highlight it
+            EditorGUIUtility.PingObject(asset);
+        }
+
+        /// <summary>
+        /// use : EditorGUIUtility.PingObject
+        /// </summary>
         static public void pingFolder(string assetsPath)
         {
             string path = "Assets/" + assetsPath;

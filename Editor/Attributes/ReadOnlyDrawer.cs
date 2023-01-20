@@ -3,13 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace fwp.halpers
+namespace fwp.halpers.editor
 {
-    public class ReadOnlyAttribute : PropertyAttribute
-    {
-
-    }
-
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
     public class ReadOnlyDrawer : PropertyDrawer
     {

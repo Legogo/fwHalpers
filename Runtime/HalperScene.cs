@@ -14,13 +14,19 @@ namespace fwp.halpers
 	static public class HalperScene
 	{
 
-		static public bool isSceneLoaded(string sceneName)
+		static public bool isRuntimeSceneLoaded(string sceneName)
+        {
+			var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName);
+			return scene.isLoaded;
+		}
+
+#if UNITY_EDITOR
+		static public bool isEditorSceneLoaded(string sceneName)
 		{
 			var scene = UnityEditor.SceneManagement.EditorSceneManager.GetSceneByName(sceneName);
 			return scene.isLoaded;
 		}
 
-#if UNITY_EDITOR
 		static public string getPathOfSceneInProject(string sceneName)
 		{
 			string[] guids = AssetDatabase.FindAssets("t:Scene");

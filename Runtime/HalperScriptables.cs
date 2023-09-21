@@ -6,48 +6,52 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace fwp.halpers
+static public class HalperScriptables
 {
-    static public class HalperScriptables
-    {
 
 #if UNITY_EDITOR
 
-        static public T[] getScriptableObjectsInEditor<T>() where T : ScriptableObject
+    static public ScriptableObject[] getScriptableObjectsInEditor(System.Type scriptableType)
+    {
+        string[] all = AssetDatabase.FindAssets("t:" + scriptableType.Name);
+        
+        List<ScriptableObject> output = new List<ScriptableObject>();
+        for (int i = 0; i < all.Length; i++)
         {
-            string[] all = AssetDatabase.FindAssets("t:" + typeof(T).Name);
-            List<T> output = new List<T>();
-            for (int i = 0; i < all.Length; i++)
-            {
-                Object obj = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(all[i]), typeof(T));
-                T data = obj as T;
-                if (data == null) continue;
-                output.Add(data);
-            }
-            return output.ToArray();
+            Object obj = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(all[i]), scriptableType);
+            ScriptableObject so = obj as ScriptableObject;
+            if (so == null) continue;
+            output.Add(so);
         }
 
-        static public T getScriptableObjectInEditor<T>(string nameContains = "") where T : ScriptableObject
-        {
-            string[] all = AssetDatabase.FindAssets("t:" + typeof(T).Name);
-            for (int i = 0; i < all.Length; i++)
-            {
-                Object obj = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(all[i]), typeof(T));
-                T data = obj as T;
+        //Debug.Log(scriptableType + " x"+output.Count+" / x" + all.Length);
 
-                if (data == null) continue;
-                if (nameContains.Length > 0)
-                {
-                    if (!data.name.Contains(nameContains)) continue;
-                }
-
-                return data;
-            }
-            Debug.LogWarning("can't locate scriptable of type " + typeof(T).Name + " (filter name ? " + nameContains + ")");
-            return null;
-        }
-#endif
-
+        return output.ToArray();
     }
+
+
+    static public ScriptableObject[] getScriptableObjectsInEditor<T>() where T : ScriptableObject 
+        => getScriptableObjectsInEditor(typeof(T));
+
+    static public T getScriptableObjectInEditor<T>(string nameContains = "") where T : ScriptableObject
+    {
+        string[] all = AssetDatabase.FindAssets("t:" + typeof(T).Name);
+        for (int i = 0; i < all.Length; i++)
+        {
+            Object obj = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(all[i]), typeof(T));
+            T data = obj as T;
+
+            if (data == null) continue;
+            if (nameContains.Length > 0)
+            {
+                if (!data.name.Contains(nameContains)) continue;
+            }
+
+            return data;
+        }
+        Debug.LogWarning("can't locate scriptable of type " + typeof(T).Name + " (filter name ? " + nameContains + ")");
+        return null;
+    }
+#endif
 
 }

@@ -12,7 +12,7 @@ namespace fwp.halpers
     {
 
 #if UNITY_EDITOR
-
+        
         static public ScriptableObject[] getScriptableObjectsInEditor(System.Type scriptableType)
         {
             string[] all = AssetDatabase.FindAssets("t:" + scriptableType.Name);
@@ -32,8 +32,8 @@ namespace fwp.halpers
         }
 
 
-        static public ScriptableObject[] getScriptableObjectsInEditor<T>() where T : ScriptableObject
-            => getScriptableObjectsInEditor(typeof(T));
+        static public T[] getScriptableObjectsInEditor<T>() where T : ScriptableObject
+            => (T[])getScriptableObjectsInEditor(typeof(T));
 
         static public T getScriptableObjectInEditor<T>(string nameContains = "") where T : ScriptableObject
         {

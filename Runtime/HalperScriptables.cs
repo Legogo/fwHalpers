@@ -6,6 +6,10 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// 2023-12-14
+/// must stay out of Editor/ because can also be use in runtime scripts
+/// </summary>
 namespace fwp.halpers
 {
     static public class HalperScriptables
@@ -33,7 +37,20 @@ namespace fwp.halpers
 
 
         static public T[] getScriptableObjectsInEditor<T>() where T : ScriptableObject
-            => (T[])getScriptableObjectsInEditor(typeof(T));
+        {
+            System.Type scriptableType = typeof(T);
+            string[] all = AssetDatabase.FindAssets("t:" + scriptableType.Name);
+
+            List<T> output = new List<T>();
+            for (int i = 0; i < all.Length; i++)
+            {
+                Object obj = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(all[i]), scriptableType);
+                T so = obj as T;
+                if (so == null) continue;
+                output.Add(so);
+            }
+            return output.ToArray();
+        }
 
         static public T getScriptableObjectInEditor<T>(string nameContains = "") where T : ScriptableObject
         {

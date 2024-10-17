@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.Text;
 
 namespace fwp.halpers
 {
@@ -20,17 +19,6 @@ namespace fwp.halpers
             if (digit >= 3 && val < 100) output = "0" + output;
             return output;
         }
-
-        static public string upperFirstLetter(this string v)
-        {
-            return v.Substring(0, 1).ToUpper() + v.Substring(1, v.Length - 1);
-        }
-
-        static public string lowerFirstLetter(this string v)
-        {
-            return v.Substring(0, 1).ToLower() + v.Substring(1, v.Length - 1);
-        }
-
 
         static public string[] extractNoneEmptyLines(string[] lines)
         {
@@ -51,10 +39,6 @@ namespace fwp.halpers
             return ts.Minutes + separator + ts.Seconds + separator + ts.Milliseconds;
         }
 
-        static public void prepend(this StringBuilder instance, string content)
-        {
-            instance.Insert(0, content + Environment.NewLine);
-        }
     }
 
 }

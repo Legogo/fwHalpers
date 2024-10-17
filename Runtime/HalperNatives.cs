@@ -9,6 +9,17 @@ using System.Diagnostics;
 static public class HalperNatives
 {
 
+#if UNITY_EDITOR
+    /// <summary>
+    /// internal, editor
+    /// </summary>
+    static public void os_browseFolder(string folderPath)
+    {
+
+        UnityEditor.EditorUtility.RevealInFinder(folderPath);
+    }
+#endif
+
     static public string generateUniqId()
     {
         return Guid.NewGuid().ToString();
@@ -70,11 +81,17 @@ static public class HalperNatives
         return Application.persistentDataPath;
     }
 
+    static public bool isLinux()
+    {
+        return Application.platform == RuntimePlatform.LinuxPlayer;
+    }
+
     static public bool isDesktop()
     {
         if (isWindows()) return true;
         if (isOsx()) return true;
-        //linux
+        if (isLinux()) return true;
+
         return false;
     }
 

@@ -91,4 +91,28 @@ public class HalperIO
     return path;
   }
 
+    /// <summary>
+    /// path within project
+    /// remove metas
+    /// </summary>
+    static public string[] getAllFileAtFolder(string projectFolderPath, string filter)
+    {
+        List<string> files = new List<string>();
+
+        projectFolderPath = Path.Combine(UnityEngine.Application.dataPath, projectFolderPath);
+
+        files.AddRange(Directory.GetFiles(projectFolderPath, filter));
+
+        for (int i = 0; i < files.Count; i++)
+        {
+            if (files[i].Contains("meta"))
+            {
+                files.RemoveAt(i);
+                i--;
+            }
+        }
+
+        return files.ToArray();
+    }
+
 }

@@ -89,10 +89,13 @@ namespace fwp.halpers
         }
 
         static private GUIStyle gButtonBig;
-        static public GUIStyle getButtonBig(float height)
+        static public GUIStyle getButtonBig(float height = 0, float width = 0, int size = 15)
         {
             if (gButtonBig == null) gButtonBig = new GUIStyle(GUI.skin.button);
+            gButtonBig.fontSize = size;
             gButtonBig.fixedHeight = height;
+            gButtonBig.fixedWidth = width;
+            gButtonBig.stretchWidth = true;
             return gButtonBig;
         }
 

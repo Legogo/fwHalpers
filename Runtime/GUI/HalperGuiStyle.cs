@@ -10,10 +10,40 @@ namespace fwp.halpers
         const float refSize = 1280f;
         const float refTextSize = 16f;
 
+        /// <summary>
+        /// ratio of screen size
+        /// returns font size in pixel~
+        /// </summary>
         static public int getPropSizedTextSize(float addRatio = 1f)
         {
             float ratio = (Screen.width * 1f) / refSize; // 0.6f pour 1280
             return (int)((refTextSize * ratio) * addRatio);
+        }
+
+        static GUIStyle text_active;
+        static public GUIStyle getTextGreen()
+        {
+
+            if (text_active == null)
+            {
+                text_active = new GUIStyle();
+                text_active.normal.textColor = Color.green;
+            }
+
+            return text_active;
+        }
+
+        static GUIStyle text_inactive;
+        static public GUIStyle getTextRed()
+        {
+
+            if (text_inactive == null)
+            {
+                text_inactive = new GUIStyle();
+                text_inactive.normal.textColor = Color.red;
+            }
+
+            return text_inactive;
         }
 
         static private GUIStyle gWinTitle;
@@ -34,6 +64,28 @@ namespace fwp.halpers
             }
 
             return gWinTitle;
+        }
+
+        static private GUIStyle gSectionTitle;
+        static public GUIStyle getSectionTitle(int size = 15, TextAnchor anchor = TextAnchor.MiddleCenter, int margin = 10)
+        {
+            if (gSectionTitle == null)
+            {
+                gSectionTitle = new GUIStyle();
+
+                gSectionTitle.richText = true;
+                gSectionTitle.alignment = anchor;
+                gSectionTitle.normal.textColor = Color.white;
+
+                gSectionTitle.fontStyle = FontStyle.Bold;
+                gSectionTitle.margin = new RectOffset(margin, margin, margin, margin);
+                //gWinTitle.padding = new RectOffset(30, 30, 30, 30);
+
+            }
+
+            gSectionTitle.fontSize = size;
+
+            return gSectionTitle;
         }
 
         static private GUIStyle gButtonBig;

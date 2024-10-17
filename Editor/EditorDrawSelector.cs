@@ -157,7 +157,7 @@ namespace fwp.halpers.editor
 
             if (hasOptions)
             {
-                if (GUILayout.Button("<", EdStyles.getWSmall())) previous();
+                if (GUILayout.Button("<", HalperGuiOptions.getWSmall())) previous();
 
                 int ret = EditorGUILayout.Popup(current, optionsFiltered);
                 if (ret != current)
@@ -165,7 +165,7 @@ namespace fwp.halpers.editor
                     setCurrentIndex(ret);
                 }
 
-                if (GUILayout.Button(">", EdStyles.getWSmall())) next();
+                if (GUILayout.Button(">", HalperGuiOptions.getWSmall())) next();
 
                 GUILayout.Label((current + 1) + " / " + optionsFiltered.Length);
             }
@@ -177,13 +177,13 @@ namespace fwp.halpers.editor
         {
             GUILayout.BeginHorizontal();
 
-            if (GUILayout.Button("clear filter", EdStyles.getWMed()))
+            if (GUILayout.Button("clear filter", HalperGuiOptions.getWMed()))
             {
                 filter = string.Empty; // clear
                                        //setCurrentIndex(0);
             }
 
-            string _filter = EditorGUILayout.TextField(filter, EdStyles.getWLarge());
+            string _filter = EditorGUILayout.TextField(filter, HalperGuiOptions.getWLarge());
             if (_filter != filter)
             {
                 filter = _filter.ToLower(); // textfield value change

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace fwp.halpers.editor
+namespace fwp.halpers
 {
 
-	static public class EdStyles
+	static public class HalperGuiOptions
 	{
 		static public GUILayoutOption wXS = GUILayout.Width(30f);
 		static public GUILayoutOption wS = GUILayout.Width(50f);

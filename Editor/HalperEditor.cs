@@ -4,16 +4,16 @@ using UnityEngine;
 using UnityEditor;
 using System.Reflection;
 
-/// <summary>
-/// % = ctrl
-/// # = shit
-/// & = alt
-/// </summary>
-
 namespace fwp.halpers.editor
 {
     public class HalperEditor
     {
+
+        /// <summary>
+        /// % = ctrl
+        /// # = shit
+        /// & = alt
+        /// </summary>
 
         [MenuItem("Tools/Clear console #&c")]
         public static void ClearConsole()
@@ -154,41 +154,77 @@ namespace fwp.halpers.editor
 
         }// getLocalIdInFile()
 
-
-        static public ScriptableObject getScriptable<T>() where T : ScriptableObject
+        /// <summary>
+        /// meant to send left arrow event to hierarchy window
+        /// </summary>
+        /// <param name="count"></param>
+        static public void upfoldNodeHierarchy(int count = 6)
         {
-            string typ = typeof(T).ToString();
-            //Debug.Log(typ);
-            string[] all = AssetDatabase.FindAssets("t:" + typ);
-            //Debug.Log(all.Length);
-            for (int i = 0; i < all.Length; i++)
+
+            if (!HalperPrefsEditor.isToggled(HalperPrefsEditor.ppref_editor_lock_upfold))
             {
-                Object obj = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(all[i]), typeof(T));
-                T data = obj as T;
-                if (data != null) return data;
+                //Debug.Log("HalperEditor:upfolding NOK");
+                return;
             }
-            return null;
-        }
 
-        static public T getScriptableObjectInEditor<T>(string nameEnd = "") where T : ScriptableObject
-        {
-            string[] all = AssetDatabase.FindAssets("t:" + typeof(T).Name);
-            for (int i = 0; i < all.Length; i++)
+            Debug.Log("HalperEditor:upfolding");
+
+            //Debug.Log(EditorWindow.focusedWindow);
+
+            EditorWindow targetWindow = null;
+            SearchableEditorWindow[] windows = (SearchableEditorWindow[])Resources.FindObjectsOfTypeAll(typeof(SearchableEditorWindow));
+
+            foreach (SearchableEditorWindow window in windows)
             {
-                Object obj = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(all[i]), typeof(T));
-                T data = obj as T;
-
-                if (data == null) continue;
-                if (nameEnd.Length > 0)
+                if (window.GetType().ToString() == "UnityEditor.SceneHierarchyWindow")
                 {
-                    if (!data.name.EndsWith(nameEnd)) continue;
+                    targetWindow = window;
+                    break;
                 }
-
-                return data;
             }
-            Debug.LogWarning("can't locate scriptable of type " + typeof(T).Name + " (filter name ? " + nameEnd + ")");
-            return null;
+
+            //Debug.Log(targetWindow);
+
+            if (targetWindow == null) Debug.LogWarning("no Hierarchy window ?");
+            else
+            {
+                //targetWindow.Focus();
+
+                //Debug.Log(targetWindow.titleContent.text);
+                //Debug.Log(targetWindow + " = " + Selection.activeGameObject);
+
+                /*
+                // down arrow to select last of list
+                Object candidate = GameObject.FindObjectOfType<GameObject>();
+                Selection.activeObject = candidate;
+                candidate = null;
+
+                int safe = 999;
+                while (Selection.activeObject != candidate && safe > 0)
+                {
+                    candidate = Selection.activeGameObject; // buff
+                    Debug.Log("swap to " + candidate, candidate);
+
+                    targetWindow.SendEvent(new Event { keyCode = KeyCode.DownArrow, type = EventType.KeyDown });
+                    safe--;
+                }
+                Debug.Assert(safe > 0);
+
+                Debug.Log(candidate);
+                */
+
+                // left arrows
+                //Debug.Log($"sending x{count} left arrow to {targetWindow}");
+
+                for (int i = 0; i < count; i++)
+                {
+                    targetWindow.SendEvent(new Event { keyCode = KeyCode.LeftArrow, type = EventType.KeyDown });
+                }
+            }
+
+            Selection.activeGameObject = null;
         }
+
     }
 
 }

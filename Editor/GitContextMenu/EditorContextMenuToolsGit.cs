@@ -1,12 +1,18 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 using System;
 using System.IO;
+using System.Reflection;
+
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace fwp.halpers.editor.git
 {
+    using fwp.halpers;
+
     public class EditorContextMenuToolsGit : MonoBehaviour
     {
+        
         //[MenuItem("Assets/git !#&%g")]
         [MenuItem("Assets/git &%g")]
         static protected void openGit()
@@ -82,9 +88,6 @@ namespace fwp.halpers.editor.git
         /// <summary>
         /// recurcively search for git folder
         /// </summary>
-        /// <param name="basePath"></param>
-        /// <param name="folderName"></param>
-        /// <returns></returns>
         static private string getFolderPathContainingGit(string basePath, string folderName)
         {
             //Debug.Log("path : " + basePath);
@@ -113,6 +116,7 @@ namespace fwp.halpers.editor.git
 
             return "";
         }
+        
     }
 
 }
